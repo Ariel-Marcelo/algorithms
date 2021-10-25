@@ -1,21 +1,23 @@
 function main() {
-    //var i = nextInt();
-    //var s = nextString();
-    //var c = nextChar();
-    //var f = nextFloat();
+    // t = test cases
+    // c = capacity of bag
+    // n = gadgets in laboratory
+    // w  = weigh
+    // f = power
+    // t
+    // c n
+    // w p
 
-    var testCasesNum = nextInt();
+    var testCases = nextInt();
 
     var gMaximunPower;
 
     while (testCasesNum > 0) {
 
-        var bCapacity = nextInt();//6
-        var gToChoose = nextInt();//2
+        var c = nextInt();//6
+        var n= nextInt();//2
 
-
-        let gWeight = []; 
-        let gPower = [];
+        var matrix = [[]];
 
         for(i = gToChoose; i > 0; i--) {
             gWeight.push(nextInt());
