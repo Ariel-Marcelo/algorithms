@@ -1,0 +1,4 @@
+Link to the excersice
+https://csacademy.com/ieeextreme-practice/task/ed8629419f140a5a2c923b049aba1224/statement/
+Link solution 
+https://github.com/papachristoumarios/IEEEXtreme11.0/blob/master/BeetleBag/sol.py
