@@ -1,4 +1,7 @@
 function main() {
+
+
+    
     // t = test cases
     // c = capacity of bag
     // n = gadgets in laboratory
@@ -8,47 +11,51 @@ function main() {
     // c n
     // w p
 
-    var testCases = nextInt();
-
-    var gMaximunPower;
-
-    while (testCasesNum > 0) {
-
-        var c = nextInt();//6
-        var n= nextInt();//2
-
-        var matrix = [[]];
-
-        for(i = gToChoose; i > 0; i--) {
-            gWeight.push(nextInt());
-            gPower.push(nextInt());
-        }
-
-        // encontremos el gMaximunPower
-
-      
-
-        
-            let maxIndex = gPower.findIndex(p => p = Math.max(...gPower));
-            if (gWeight[maxIndex] <= bCapacity) {
-                maxFind = true;
-                gMaximunPower =  gPower[maxIndex];
-            } else {
-                gPower.splice(maxIndex, 1);
-            }
-        
-        console.log(gMaximunPower);
-        testCasesNum--;
+    var t =  nextInt();
+    for(let index = 0; t > index; index++) {
+        sol();
     }
 }
 
+function sol() { 
+    let c = nextInt();
+    let n = nextInt();
+    myMatriz = [];
+    for(let index = 0; index <= n; index++){
+        w = nextInt();
+        f = nextInt();
+        let myAux = [];
+        console.log( `1` );
+        for(let j = 0; j <= c; j++){
+            if(index == 0){
+                myAux.push(0);
+            }else{
+                if(w <= j){
+                    let aux = j - w;
+                    if(f < myMatrix[index -1][j]){
+                        myAux.push(myMatrix[index -1][j]);
+                    }else{
+                        myAux.push(f); 
+                    }
+                    myAux[j] = myAux[j] + myMatrix[index-1][aux];
+                }else{
+                    myAux.push(myMatrix[index - 1][j]);
+                }
+            }
+            
+        }
+        myMatriz.push(myAux);
+        
+    }
+    console.log(myMatriz);
+    console.log(myMatriz[n + 1][c + 1]);
+}
 // default parsers for JS.
 function nextInt() {
     return parseInt(nextString());
 }
 
 function nextFloat() {
-    console.log("my integer is: " + i);
     return parseFloat(nextString());
 }
 
@@ -87,7 +94,7 @@ function clearWhitespaces() {
     while (input_cursor < input_stdin.length && isWhitespace(input_stdin[input_cursor])) {
         // ignore the next whitespace character
         input_cursor += 1;
-    }
+    }  
 }
 
 main();

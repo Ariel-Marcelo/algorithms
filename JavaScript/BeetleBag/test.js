@@ -1,14 +1,16 @@
 function main(){
     let myArray = [];
-    myArray.push(5);
-    myArray.push(4);
+    let myArray2 = [2,3];
+    let myArray3 = [3,2];
+    myArray.push(myArray2);
+    myArray.push(myArray3);
     myArray.push(10);
-    myArray.push(2);
-    console.log(myArray);
+    console.log(myArray[2]);
+    /*
     let maximun = Math.max(...myArray);
     console.log(maximun);
     let index = myArray.findIndex( (p) => p === maximun);
-    console.log(index);
+    console.log(`${index}`);
 
 
     let myIndex = myArray.findIndex( (p) => p === Math.max(...myArray));
@@ -16,6 +18,7 @@ function main(){
 
     myArray.sort((a,b) => a - b);
     console.log(myArray);
+    */
 }
 
 main();
