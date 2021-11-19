@@ -18,6 +18,7 @@ function main() {
 }
 
 function sol() { 
+<<<<<<< HEAD:JavaScript/BeetleBag/solution.js
     let c = nextInt();
     let n = nextInt();
     myMatriz = [];
@@ -49,6 +50,38 @@ function sol() {
     }
     console.log(myMatriz);
     console.log(myMatriz[n + 1][c + 1]);
+=======
+    
+    let c = nextInt();
+    let n = nextInt();
+    
+    myMatriz = [];
+    
+    let a = [];
+    for(let index = 0; index <= c; index++){
+        a.push(0);
+    }
+    myMatriz.push(a);
+    
+    for(let index = 1; index <= n; index++){
+        w = nextInt();
+        f = nextInt();
+        let myAux = [];
+        for(let j = 0; j <= c; j++){
+                if(w <= j){
+                    let aux = j - w;
+                    let a = f + myMatriz[index-1][aux];
+                    let b = myMatriz[index - 1][j];
+                    myAux.push(Math.max(a,b));
+                }else{
+                    myAux.push(myMatriz[index - 1][j]);
+                }
+        }
+        myMatriz.push(myAux);
+    }
+    
+    console.log(myMatriz[n][c]);
+>>>>>>> edb7e8480a1f5affd487a54ca4d595ec2a5d7575:JavaScript/BeetleBag/Solution.js
 }
 // default parsers for JS.
 function nextInt() {
@@ -95,6 +128,10 @@ function clearWhitespaces() {
         // ignore the next whitespace character
         input_cursor += 1;
     }  
+<<<<<<< HEAD:JavaScript/BeetleBag/solution.js
 }
 
 main();
+=======
+}
+>>>>>>> edb7e8480a1f5affd487a54ca4d595ec2a5d7575:JavaScript/BeetleBag/Solution.js
