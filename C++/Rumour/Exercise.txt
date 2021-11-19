@@ -1,0 +1,4 @@
+Link to the excersice
+https://csacademy.com/ieeextreme-practice/task/9ca8fafd184f553a903734761546a224/
+Link to the solution in C++
+https://github.com/papachristoumarios/IEEEXtreme11.0/blob/master/rumour(full%20score)/rumour.cpp
