@@ -1,10 +1,12 @@
 class Agente :
     costo = 0
     result = []
-    def __init__(self):
+    def __init__(self, sensor):
         sensor = Sensor()
-     
-
+        self._limpiar(sensor)
+    
+    def __limpiar(self, sensor):
+        sensor.isClean()
 
 
 class Sensor :
@@ -15,10 +17,9 @@ class Sensor :
         vacummRoom = input("En que cuarto esta A o B \n")
         roomA = input("El cuarto A esta 0 (limpio) o 1 (sucio) \n")
         roomB = input("El cuarto B esta 0 limpio o 1 (sucio) \n ")
-        print(vacummRoom)
+    
     
     def isClean(self) -> bool:
-        pass
         if self.vacummRoom == "A" and self.roomA == "1":
             return True
 
@@ -28,6 +29,8 @@ class Sensor :
         return False
 
 
-sensor = Sensor()
-myAgent = Agente(sensor)
-myAgent.limpiar
+
+
+if __name__ == "__main__":
+    agente = Agente(Sensor())
+    
