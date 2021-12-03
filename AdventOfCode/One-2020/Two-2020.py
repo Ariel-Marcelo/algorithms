@@ -34,40 +34,28 @@ def start():
             print(entry[i], entry[j], entry[k])
             break
         elif entry[i] + entry[j] + entry[k] < wanted:
-            while j > i + 1:
-                i += 1
-                if entry[i] + entry[j] + entry[k] == wanted:
-                    print(entry[i], entry[j], entry[k])
-                    break
-                elif entry[i] + entry[j] + entry[k] > wanted:
-                    break   
-
+            # Tengo que move i o j
             j += 1
+            while i < j:
+                if entry[i] + entry[j] + entry[k] == wanted:
+                    print( entry[i], entry[j], entry[k])
+                elif entry[i] + entry[j] + entry[k] > wanted:
+                    break
+                i+=1    
+        else:
+            # Tengo que move k
+            k -= 1
+            while k > j:
+                if entry[i] + entry[j] + entry[k] == wanted:
+                    print( entry[i], entry[j], entry[k])
+                elif entry[i] + entry[j] + entry[k] < wanted:
+                    break
+                k -= 1
+            
         elif entry[i] + entry[j] + entry[k] > wanted:
             k -= 1
-            
-
-    print(entry[i] , entry[j] , entry[k])
-    #sol(entry, i, j, 1768, True)
-    #print(result)
-
-"""
-def sol(entry, a, b, wanted, flag):
-    bandera = flag
-    i, j = a, b
-    while i < j:
-        if (entry[i] + entry[j]) == wanted:
-            break
-        elif (entry[i] + entry[j]) < wanted:
-            i += 1
-        elif (entry[i] + entry[j]) > wanted:
-            j -= 1
-
-    if bandera == True:
-        sol(entry[0:i], 0, i-1, entry[i], False)
-        sol(entry[0:j], 0, j-1, entry[j], False)
     
-    result.append(entry[i])
-    result.append(entry[j])
-"""
+    print(entry[i] , entry[j] , entry[k])
+
+
 start()
