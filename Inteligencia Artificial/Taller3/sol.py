@@ -3,21 +3,70 @@
 # Recorrer un conjunto de datos por BFS mostrando el camino hacia el objetivo
 # De los caminos encontrados elija el más corto osea con menos nodos
 
-nodo1 = {'Salina Cruz': [ 'Tehuantepec','Huatulco']}
-nodo2 = {'Huatulco': ['Puerto Escondido']}
-nodo3 = {'Tehuantepec': ['Juchitán','Oxaca']}
-nodo4 = {'Juchitán': ['Ayucan', 'Tonalá', 'Ixtepec']}
-nodo5 = {'Oxaca': ['Puebla']}
-nodo6 = {'Ayucan': ['Veracruz', 'Minatitlán']}
-nodo7 = {'Tonalá': []}
-nodo8 = {'Ixtepec': []}
-nodo9 = {'Puebla': ['Ciudad de México', 'Orizaba']}
-nodo10 = {'Ciudad de México': []}
-nodo11 = {'Orizaba': ['Cordoba']}
-nodo12 = {'Veracruz': ['Poza Rica', 'Xalapa', 'Cordoba']}
-nodo13 = {'Poza Rica': ['Tuxpan']}
-nodo14 = {'Xalapa': []}
-nodo15 = {'Cordoba': []}
-nodo16 = {'Tuxpan': ['Tampico']}
-nodo17 = {'Tampico': ['Matamaros']}
-nodo18 = {'Matamaros': ['Ciudad Reynosa']}
+grafo = {'Salina Cruz': [ 'Tehuantepec','Huatulco'],
+        'Huatulco': ['Puerto Escondido'],
+        'Tehuantepec': ['Juchitán','Oxaca'],
+        'Juchitán': ['Ayucan', 'Tonalá', 'Ixtepec'],
+        'Oxaca': ['Puebla'],
+        'Ayucan': ['Veracruz', 'Minatitlán'],
+        'Tonalá': [],
+        'Ixtepec': [],
+        'Puebla': ['Ciudad de México', 'Orizaba'],
+        'Ciudad de México': [],
+        'Orizaba': ['Cordoba'],
+        'Veracruz': ['Poza Rica', 'Xalapa', 'Cordoba'],
+        'Poza Rica': ['Tuxpan'],
+        'Xalapa': [],
+        'Cordoba': [],
+        'Tuxpan': ['Tampico'],
+        'Tampico': ['Matamaros'],
+        'Matamaros': ['Ciudad Reynosa'],
+        'Puerto Escondido': [],
+        'Minatitlán': [],
+        'Ciudad Reynosa': []}
+
+ciudades = list(grafo.keys())
+visitados = []
+pila = []
+camino = []
+caminoMásCorto = []
+
+def solFBS(grafo, destino):
+    # Primero en entrar primero en salir
+    # Se acaba cuando la pila se agote
+    while pila:
+        puntoPartida = pila.pop(0)
+        # A partir del punto de partida visitar solo los nodos no visitados
+        for puedeVisitar in grafo[puntoPartida]:
+            if puedeVisitar not in visitados:
+                visitados.append(puedeVisitar)
+                pila.append(puedeVisitar)
+                print('pila', pila)
+                print('visitados', visitados)
+                print(puedeVisitar)
+        else: 
+            print ('estoy vacío')
+
+
+def solDBS(grafo, destino):
+    # Primero en entrar ultimo en salir
+    # Se acaba cuando la pila se agote
+    while pila:
+        puntoPartida = pila.pop()
+        # A partir del punto de partida visitar solo los nodos no visitados
+        for puedeVisitar in grafo[puntoPartida]:
+            if puedeVisitar not in visitados:
+                visitados.append(puedeVisitar)
+                pila.append(puedeVisitar)
+                print('pila', pila)
+                print('visitados', visitados)
+
+        if destino in visitados: 
+            print('You are in your destiny')
+            break
+
+
+if __name__ == '__main__':
+    pila.append('Salina Cruz')
+    solFBS(grafo, 'Ciudad Reynosa')
+
