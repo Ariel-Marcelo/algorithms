@@ -17,19 +17,20 @@ def DFS(graph, start, end, path, shortest, toPrint = False):
     """Assumes graph is a Digraph; start and end are nodes;
           path and shortest are lists of nodes
        Returns a shortest path from start to end in graph"""
-    path = path + [start]
+    path = path + [start] # iniciamos el camino
     if toPrint:
-        print('Camino DFS actual:', printPath(path))
-    if start == end:
+        print('Camino DFS actual:', printPath(path)) #imprimimos el camino actual
+    if start == end: # si el origen es igual al destino entonces solo devuelve el camino actual
         return path
-    for node in graph.childrenOf(start):
-        if node not in path: #avoid cycles
-            if shortest == None or len(path) < len(shortest):
+    for node in graph.childrenOf(start): # recorro los hijos del punto de partida actual
+        if node not in path: # si estos hijos no estan en el camino actual 
+            if shortest == None or len(path) < len(shortest): # compruebe si el camino más corto esta vacion o tiene un
+                                                                #costo más alto que el camino actual
                 newPath = DFS(graph, node, end, path, shortest,
-                              toPrint)
-                if newPath != None:
-                    shortest = newPath
-        elif toPrint:
+                              toPrint) # volver a llamar al DFS pero esta vez con ese nodo como punto de partida generando un nuevo camino
+                if newPath != None: # si el camino nuevo no esta vacio 
+                    shortest = newPath # defina al nuevo shortes con el nuevo camino
+        elif toPrint: # si es que el hijo esta en el camino actual imprima Ya visitado 
             print('Ya visitado', node)
     return shortest
 
@@ -40,11 +41,11 @@ def BFS(graph, start, end, toPrint = False):
     pathQueue = [initPath] #inicializa la cola de camino, lista de listas
     while len(pathQueue) != 0:
         #Get and remove oldest element in pathQueue
-        tmpPath = pathQueue.pop(0) #saco siempre la primera lista
+        tmpPath = pathQueue.pop(0) #saco siempre la primera lista (el primer camino)
         if toPrint:
             print('Current BFS path:', printPath(tmpPath)) #imprime la primera lista que referencia pathQueue
         lastNode = tmpPath[-1] #ultimo nodo del dicha lista
-        if lastNode == end: #si el ultimo nodo de la primera lista de pathQueue es el nodo final se retorna la lista
+        if lastNode == end: #si el ultimo nodo de la primera lista de pathQueue es el nodo final se retorna ese camino esa lista
             return tmpPath
         for nextNode in graph.childrenOf(lastNode): #recorre los hijos del ultimo nodo de la lista actual 
             if nextNode not in tmpPath: # si el nodo no esta en la lista actual
@@ -53,8 +54,8 @@ def BFS(graph, start, end, toPrint = False):
     return None
 
 def shortestPath(graph, start, end, toPrint = False): 
-    #return DFS(graph, start, end, [], None, toPrint)
-    return BFS(graph, start, end, toPrint)
+    return DFS(graph, start, end, [], None, toPrint)
+    #return BFS(graph, start, end, toPrint)
 
 class Node(object):
     def __init__(self, name):#inicializa el nodo
@@ -115,27 +116,34 @@ class Graph(Digraph):
         Digraph.addEdge(self, edge)
         rev = Edge(edge.getDestination(), edge.getSource())
         Digraph.addEdge(self, rev)
-                
-    
     
 def buildCityGraph(graphType):#crea un grafo de ciudades
     g = graphType()
-    for name in ('Arad', 'Sibiu', 'Zerind', 'Oradea', 'Rimnicu', 'Timisoara', 'Lugoj', 'Mehadia', 'Dobreta', 'Craiova','Pitesti', 'Fagaras', 'Bucarest'):
+    for name in ('Salina Cruz', 'Huatulco', 'Tehuantepec', 'Puerto Escondido', 'Juchitán', 
+    'Oaxaca', 'Puebla','Ciudad de México', 'Orizaba', 'Cordoba','Veracruz', 'Ixtepec', 'Tonalá',
+    'Acayucan', 'Minatitlán', 'Xalapa', 'Poza Rica', 'Tuxpan', 'Tampico', 'Matamaros', 'Ciudad Reynosa'):
         g.addNode(Node(name))
-    g.addEdge(Edge(g.getNode('Arad'), g.getNode('Zerind')))
-    g.addEdge(Edge(g.getNode('Arad'), g.getNode('Timisoara')))
-    g.addEdge(Edge(g.getNode('Arad'), g.getNode('Sibiu')))
-    g.addEdge(Edge(g.getNode('Zerind'), g.getNode('Oradea')))
-    g.addEdge(Edge(g.getNode('Timisoara'), g.getNode('Lugoj')))
-    g.addEdge(Edge(g.getNode('Lugoj'), g.getNode('Mehadia')))
-    g.addEdge(Edge(g.getNode('Mehadia'), g.getNode('Dobreta')))
-    g.addEdge(Edge(g.getNode('Dobreta'), g.getNode('Craiova')))
-    g.addEdge(Edge(g.getNode('Craiova'), g.getNode('Pitesti')))
-    g.addEdge(Edge(g.getNode('Pitesti'), g.getNode('Bucarest')))
-    g.addEdge(Edge(g.getNode('Sibiu'), g.getNode('Rimnicu')))
-    g.addEdge(Edge(g.getNode('Sibiu'), g.getNode('Fagaras')))
-    g.addEdge(Edge(g.getNode('Rimnicu'), g.getNode('Pitesti')))
-    g.addEdge(Edge(g.getNode('Fagaras'), g.getNode('Bucarest')))
+    g.addEdge(Edge(g.getNode('Salina Cruz'), g.getNode('Tehuantepec')))
+    g.addEdge(Edge(g.getNode('Salina Cruz'), g.getNode('Huatulco')))
+    g.addEdge(Edge(g.getNode('Huatulco'), g.getNode('Puerto Escondido')))
+    g.addEdge(Edge(g.getNode('Tehuantepec'), g.getNode('Oaxaca')))
+    g.addEdge(Edge(g.getNode('Tehuantepec'), g.getNode('Juchitán')))
+    g.addEdge(Edge(g.getNode('Oaxaca'), g.getNode('Puebla')))
+    g.addEdge(Edge(g.getNode('Puebla'), g.getNode('Ciudad de México')))
+    g.addEdge(Edge(g.getNode('Puebla'), g.getNode('Orizaba')))
+    g.addEdge(Edge(g.getNode('Orizaba'), g.getNode('Cordoba')))
+    g.addEdge(Edge(g.getNode('Cordoba'), g.getNode('Veracruz')))
+    g.addEdge(Edge(g.getNode('Juchitán'), g.getNode('Acayucan')))
+    g.addEdge(Edge(g.getNode('Juchitán'), g.getNode('Tonalá')))
+    g.addEdge(Edge(g.getNode('Juchitán'), g.getNode('Ixtepec')))
+    g.addEdge(Edge(g.getNode('Acayucan'), g.getNode('Veracruz')))
+    g.addEdge(Edge(g.getNode('Acayucan'), g.getNode('Minatitlán')))
+    g.addEdge(Edge(g.getNode('Veracruz'), g.getNode('Xalapa')))
+    g.addEdge(Edge(g.getNode('Veracruz'), g.getNode('Poza Rica')))
+    g.addEdge(Edge(g.getNode('Poza Rica'), g.getNode('Tuxpan')))
+    g.addEdge(Edge(g.getNode('Tuxpan'), g.getNode('Tampico')))
+    g.addEdge(Edge(g.getNode('Tampico'), g.getNode('Matamaros')))
+    g.addEdge(Edge(g.getNode('Matamaros'), g.getNode('Ciudad Reynosa')))   
     return g
 
 def testSP(source, destination):#testea el algoritmo de BFS y DFS
@@ -148,4 +156,4 @@ def testSP(source, destination):#testea el algoritmo de BFS y DFS
     else:
         print('No hay camino desde', source, 'a', destination)
         
-testSP('Arad', 'Bucarest')
+testSP('Salina Cruz', 'Ciudad Reynosa')
