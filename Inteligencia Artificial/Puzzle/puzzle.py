@@ -19,6 +19,7 @@ def sol(start, end, read):
         print("Solucion encontrada")
         return True
     a, b = blank(start)
+    #a, b = start.index("")
     aux = None
     # necesito añadir a toEvaluate los caminos de alternativPath  
     move(start, a, b)
@@ -57,6 +58,13 @@ def h1(arr, end):
             if j != end[arr.index(i)][i.index(j)]:
                 mistakes += 1
     return mistakes
+
+def h2(arr, end):
+    mistakes = 0
+    for i in arr:
+        for j in i:
+            if j != end[arr.index(i)][i.index(j)]:
+                mistakes += 1 
 
 def blank(arr):
     for i in range(len(arr)):
