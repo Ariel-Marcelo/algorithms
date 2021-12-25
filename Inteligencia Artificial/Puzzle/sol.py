@@ -52,8 +52,8 @@ def sol(nodoActual, end, read): # Solución del ejercicio
 
     min = 100000000000000000000000000000000000000000
     alternativePath = []
-    herusística = h1
-    #herusística = h2
+    #herusística = h1
+    herusística = h2
     for i in toEvaluate: # Escojer el o los mejores caminos de partida
         if herusística(i, end) < min: # busco el camino con menor heuristica
             if alternativePath != []: # tengo un nuevo minimo
@@ -112,16 +112,6 @@ def move(arr, a, b, direction):
     
     return aux
 
-"""
-def printState(state, min):
-    print(" El o los mejores caminos con el costo ", min," son: \n ")
-    toPrint = ""
-    for i in state:
-        toPrint += "state: "+ str(i) + "\n"
-
-    print(toPrint)
-        
-"""
 def printState(state, min, step):
     print("Paso # ",step,"El o los mejores caminos con el costo ", min," son: \n ")
     if len(state) != 0:
@@ -135,3 +125,13 @@ def printState(state, min, step):
 
 sol(alternativePath, end, 0)
 
+"""
+def printState(state, min):
+    print(" El o los mejores caminos con el costo ", min," son: \n ")
+    toPrint = ""
+    for i in state:
+        toPrint += "state: "+ str(i) + "\n"
+
+    print(toPrint)
+        
+"""
