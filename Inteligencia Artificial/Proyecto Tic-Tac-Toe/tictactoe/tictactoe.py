@@ -146,13 +146,21 @@ def minimax(board):
     # Si la máquina juega con O entonces empiezo buscando el mínimo 
     # Si la máguina juega con X empieza buscando el máximo
     i_am = player(board)
-    value = 0
+    new_board = cp.deepcopy(board)
+    value = None
     if i_am == X:
-        value = __max_value(board)
+        if new_board == [[EMPTY,EMPTY,EMPTY],[EMPTY,EMPTY,EMPTY],[EMPTY,EMPTY,EMPTY]]:
+            return (1,1)
+        else:
+            value = __max_value(new_board)
+            for action in actions(new_board):
+                if value == __min_value(result(new_board, action)):
+                    return action
     else:
-        value = __min_value(board)    
-
-
+        value = __min_value(new_board)
+        for action in actions(new_board):
+            if value == __max_value(result(new_board, action)):
+                return action
 
 def __max_value(board): 
     if terminal(board):
