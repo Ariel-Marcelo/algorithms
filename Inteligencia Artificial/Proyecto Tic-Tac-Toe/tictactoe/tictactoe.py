@@ -1,13 +1,12 @@
 """
 Tic Tac Toe Player
 """
-
 import math
+import copy as cp
 # Posibles movimientos
 X = "X"
 O = "O"
 EMPTY = None
-
 
 def initial_state():
     """
@@ -16,7 +15,6 @@ def initial_state():
     return [[EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY]]
-
 
 def player(board):
     """
@@ -31,51 +29,116 @@ def player(board):
             elif O == celda: 
                 countO += 1
     
-    if countX >= countO:
+    if countX <= countO:
         return X
     else:
         return O
 
-
 def actions(board):
-    """
-    Returns set of all possible actions (i, j) available on the board.
-    """
+    moves = []
+    for fila in range(len(board)): 
+        for columna in range(len(board[fila])):
+            if board[fila][columna] == EMPTY:
+                moves.append((fila,columna))
     
-
-    raise NotImplementedError
-
-
+    return moves
+    
 def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    raise NotImplementedError
+    if action not in actions(board):
+        raise Exception("Invalid action")
 
+    new_board = cp.deepcopy(board)
+    new_board[action[0]][action[1]] = player(board)
+    return new_board
 
 def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
+    state = None
+    # Check horizontal
+    for fila in range(len(board)): 
+        state = board[fila][0]
+        for columna in range(len(board[fila])):
+            if state != board[fila][columna]:
+                state = None
+                break
+
+        if state != None:
+          return state        
+    
+    # Check vertical
+    for columna in range(len(board[0])):
+        state = board[0][columna]
+        for fila in range(len(board)):
+            if state != board[fila][columna]:
+                state = None
+                break
+
+        if state != None:
+          return state
+
+    # Check diagonal 1
+    acumulador = 0
+    state = board[0][0]
+    for fila in range(len(board)):
+        if state != board[fila][acumulador]:
+            state = None
+            acumulador = 0
+            break              
+        
+        acumulador += 1
+
+    if state != None:
+      return state
+
+    # Check diagonal 2
+    state = board[len(board) - 1][0]
+    acumulador = len(board[0]) - 1
+    for fila in range(len(board)):
+        if state != board[fila][acumulador]:
+            state = None
+            acumulador = 0
+            break              
+        
+        acumulador -= 1
+
+    return state
 
 
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+    if winner(board) != None:
+        return True
+    else:
+        if actions(board) == []:
+            return True
+        else:
+            return False
 
 
 def utility(board):
     """
     Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
     """
-    raise NotImplementedError
+    if terminal(board):
+        if winner(board) == X:
+            return 1
+        elif winner(board) == O:
+            return -1
+        else:
+            return 0
 
 
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    raise NotImplementedError
+    if terminal(board):
+        return None
+
