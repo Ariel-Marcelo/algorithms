@@ -28,7 +28,7 @@ class Space():
         )
 
         # Remover todas las casas y hospitales
-        # Elimina cualquier posición ya ocuapada por una casa
+        # Elimina cualquier posición ya ocuapada por una casa u hospital
         for house in self.houses:
             candidates.remove(house)
         for hospital in self.hospitals:
@@ -44,7 +44,7 @@ class Space():
         # la ubicación de los hospitales iniciales son aleatorios
         self.hospitals = set()
         for i in range(self.num_hospitals):
-            # añade posiciones aleatorias para los hospitales
+            # añade posiciones aleatorias para los hospitales en las casillas libres
             self.hospitals.add(random.choice(list(self.available_spaces())))
         if log:
             # Imprime el estado inicial y su costo
@@ -64,24 +64,24 @@ class Space():
 
                 # Considere todos los vecinos de un hospital que no sean una casa u otro hospital
                 for replacement in self.get_neighbors(*hospital):
-                    
+                
                     # Generar un conjunto vecino de hospitales
                     neighbor = self.hospitals.copy() # copia todo el conjunto de hospitales
                     neighbor.remove(hospital) # remueve el hospital actual que se esta analizando
                     neighbor.add(replacement) # añade uno de los vecinos de ese hospital
 
-                    # Compruebo que vecino es mejor
-                    cost = self.get_cost(neighbor) # costo de la distancia de un vecion al resto de vecinos
+                    # Trata de hallar el menor costo para cada hospital ya sea moviendose o permaneciendo en el mismo sitio
+                    cost = self.get_cost(neighbor) # costo de la distancia actual de los hospitales a las casas
                     if best_neighbor_cost is None or cost < best_neighbor_cost: # si se encuentra un costo más corto
                         best_neighbor_cost = cost # se actualiza el mejor costo
                         best_neighbors = [neighbor] # nueva lista de mejores vecinos
-        
-                    elif best_neighbor_cost == cost: # si el costo es igual guarda este vecino en la lista de mejores vecinos
-                        best_neighbors.append(neighbor)
+                        
+                    elif best_neighbor_cost == cost: # si el costo es iguall mejor costo
+                        best_neighbors.append(neighbor) # estos vecinos son los mejores
 
-            # Si ninguno de los vecionos es mejor que el estado actual 
+            # Si el costo anterior es menor o igual nuevo mejor costo hallado entonces se termina el programa
             if best_neighbor_cost >= self.get_cost(self.hospitals):
-                return self.hospitals
+                return self.hospitals # devuelve el estado de los hospitales mejor ubicados
 
             # Mudarse a un vecino de mayor valor
             else:
@@ -93,8 +93,10 @@ class Space():
             if image_prefix:
                 self.output_image(f"{image_prefix}{str(count).zfill(3)}.png")
 
+    # hill climbing aleatorio
     def random_restart(self, maximum, image_prefix=None, log=False):
-        """Repeats hill-climbing multiple times."""
+        """Repitel el hill climbing multiples veces para hallar distintas distribuciones dado un 
+        numero de casas, hospitales y un espacio definido."""
         best_hospitals = None
         best_cost = None
 
@@ -102,18 +104,20 @@ class Space():
         for i in range(maximum):
             hospitals = self.hill_climb()
             cost = self.get_cost(hospitals)
+            # Si el costo es mejor que el mejor costo actual entonces encontre el mejor costo
             if best_cost is None or cost < best_cost:
                 best_cost = cost
                 best_hospitals = hospitals
                 if log:
                     print(f"{i}: Found new best state: cost {cost}")
             else:
+                # si no solo encontre un nuevo estado
                 if log:
                     print(f"{i}: Found state: cost {cost}")
 
             if image_prefix:
                 self.output_image(f"{image_prefix}{str(i).zfill(3)}.png")
-
+        # Devuelve la posicion de los hospitales mejor ubicados
         return best_hospitals
 
     def get_cost(self, hospitals):
@@ -206,7 +210,7 @@ for i in range(15):
     s.add_house(random.randrange(s.height), random.randrange(s.width))
 
 # Use local search to determine hospital placement
-hospitals = s.hill_climb(image_prefix="hospitals", log=True)
+#hospitals = s.hill_climb(image_prefix="hospitals", log=True)
 
 # Use local search to determine hospital placementhospitals = s.random_restart(20,image_prefix="hospitals", log = True)#
-#hospitals = s.random_restart(200,image_prefix="hospitals", log = True)
+hospitals = s.random_restart(200,image_prefix="hospitals", log = True)
