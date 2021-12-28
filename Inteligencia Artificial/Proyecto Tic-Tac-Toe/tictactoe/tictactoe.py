@@ -142,3 +142,35 @@ def minimax(board):
     if terminal(board):
         return None
 
+    # Si el jugador es O entonces maximizamos la utilidad de la máquina 
+    # y Minimizamos las jugadas del contrincante 
+
+    # Si el jugador es X entonces trataremos de minimizar las jugadas del contrincante
+    # y maximizar las jugadas de la máquina
+
+    new_board = cp.deepcopy(board)
+
+    if player(board) == X and board == [[EMPTY, EMPTY, EMPTY], [EMPTY, EMPTY, EMPTY], [EMPTY, EMPTY, EMPTY]]:
+        print ("Mejor jugada para X: ")
+        return (1,1)
+    
+    posibilities = actions(board)
+    i_am = player(board)
+
+    for state in posibilities:
+        new_board[state[0]][state[1]] = i_am
+        if i_am == X: # si ahora soy X significa q antes fui O
+            if utility(new_board) == 1:
+                print ("Mejor jugada para O: ", state)
+                return state
+            else:
+                minimax(new_board)
+        else:
+            if utility(new_board) == -1:
+                print ("Mejor jugada para X: ", state)
+                return state
+            else:
+                minimax(new_board)
+    
+    return None
+
