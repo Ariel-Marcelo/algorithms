@@ -10,7 +10,7 @@ EMPTY = None
 
 def initial_state():
     """
-    Returns starting state of the board.
+    Retorna el estado inicial del tablero
     """
     return [[EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY],
@@ -18,17 +18,18 @@ def initial_state():
 
 def player(board):
     """
-    Returns player who has the next turn on a board.
+    Retorna el jugador con el siguiente turno.
     """
     countX = 0;
     countO = 0;
+    # contamos el número de X y O
     for fila in board: 
         for celda in fila:
             if X == celda:
                 countX += 1
             elif O == celda: 
                 countO += 1
-    
+    # X siempre empieza asi que el turno de X es cuando el número de X es menor o igual que el de O
     if countX <= countO:
         return X
     else:
@@ -36,6 +37,7 @@ def player(board):
 
 def actions(board):
     moves = []
+    # Me puedo mover a cualquier casilla EMPTY
     for fila in range(len(board)): 
         for columna in range(len(board[fila])):
             if board[fila][columna] == EMPTY:
@@ -56,32 +58,32 @@ def result(board, action):
 
 def winner(board):
     """
-    Returns the winner of the game, if there is one.
+    Dime cual es el ganador, si no hay un ganador retorna None
     """
     state = None
-    # Check horizontal
+    # Ganador horizontal
     for fila in range(len(board)): 
-        state = board[fila][0]
+        state = board[fila][0] # asumo q todos los elemntos de la fila son iguales al primero
         for columna in range(len(board[fila])):
-            if state != board[fila][columna]:
+            if state != board[fila][columna]: # si no son iguales paso a la siguiente fila
                 state = None
                 break
 
         if state != None:
           return state        
     
-    # Check vertical
+    # Gandador vertical
     for columna in range(len(board[0])):
-        state = board[0][columna]
+        state = board[0][columna] # asumo que todos los elementos de la columan son iguales al primero
         for fila in range(len(board)):
-            if state != board[fila][columna]:
+            if state != board[fila][columna]: # si no son iguales paso a la siguiente columana
                 state = None
                 break
 
         if state != None:
           return state
 
-    # Check diagonal 1
+    # Ganador diagonal 1
     acumulador = 0
     state = board[0][0]
     for fila in range(len(board)):
@@ -95,7 +97,7 @@ def winner(board):
     if state != None:
       return state
 
-    # Check diagonal 2
+    # Ganador diagonal 2
     state = board[len(board) - 1][0]
     acumulador = len(board[0]) - 1
     for fila in range(len(board)):
@@ -111,7 +113,7 @@ def winner(board):
 
 def terminal(board):
     """
-    Returns True if game is over, False otherwise.
+    Retorna True si el juego ha terminado y False en caso contrario
     """
     if winner(board) != None:
         return True
@@ -124,7 +126,7 @@ def terminal(board):
 
 def utility(board):
     """
-    Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
+    Retornar 1 si X ha ganado, -1 si O ha ganado, 0 si es un empate.
     """
     if terminal(board):
         if winner(board) == X:
@@ -137,47 +139,47 @@ def utility(board):
 
 def minimax(board):
     """
-    Returns the optimal action for the current player on the board.
+    Retorna la acción óptima a tomar
     """
     # Si el juego ya ha terminado solo responde None
     if terminal(board):
         return None
 
-    # Si la máquina juega con O entonces empiezo buscando el mínimo 
-    # Si la máguina juega con X empieza buscando el máximo
-    i_am = player(board)
+    # Si la máquina juega con O entonces empiezo buscando el mínimo por su utilidad -1
+    # Si la máguina juega con X empieza buscando el máximo por su utilidad 1
+    i_am = player(board) # juego con X o O 
     new_board = cp.deepcopy(board)
     value = None
     if i_am == X:
         if new_board == [[EMPTY,EMPTY,EMPTY],[EMPTY,EMPTY,EMPTY],[EMPTY,EMPTY,EMPTY]]:
-            return (1,1)
+            return (1,1) # si soy X y hago el primer movimiento en el tablero me coloco en el centro.
         else:
-            value = __max_value(new_board)
-            for action in actions(new_board):
+            value = __max_value(new_board) # empiezo buscando el máximo por su utilidad 1
+            for action in actions(new_board): # para cualquier acción con el mismo valor de utilidad
                 if value == __min_value(result(new_board, action)):
-                    return action
+                    return action # retorno la acción para llegar a ese estado
     else:
-        value = __min_value(new_board)
+        value = __min_value(new_board) # empiezo buscando el mínimo por su utilidad -1
         for action in actions(new_board):
             if value == __max_value(result(new_board, action)):
                 return action
 
 def __max_value(board): 
-    if terminal(board):
+    if terminal(board): # si el juego ha terminado retorno la utilidad del tablero
         return utility(board)
     
-    value = -2
+    value = -2 # nunca tomo valores menores a -2
     for action in actions(board):
-        value = max(value, __min_value(result(board, action)))
+        value = max(value, __min_value(result(board, action))) # tomo el máximo estado posible
 
-    return value
+    return value # retorno el valor máximo
 
 def __min_value(board):
-    if terminal(board):
+    if terminal(board): # si el juego ha terminado retorno la utilidad del tablero
         return utility(board)
 
-    value = 2
-    for action in actions(board):
-        value = min(value, __max_value(result(board, action)))
+    value = 2 # nunca tomo valores mayores a 2
+    for action in actions(board): # para cualquier acción
+        value = min(value, __max_value(result(board, action))) # tomo el mínimo estado posible
 
-    return value
+    return value # retorno el valor mínimo
