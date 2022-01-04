@@ -1,7 +1,7 @@
 """
 Tic Tac Toe Player
 """
-import math
+import random
 import copy as cp
 # Posibles movimientos
 X = "X"
@@ -47,7 +47,7 @@ def actions(board):
     
 def result(board, action):
     """
-    Returns the board that results from making move (i, j) on the board.
+    Retorna el tablero resultante de haber ejecutado el movimiento.
     """
     if action not in actions(board):
         raise Exception("Invalid action")
@@ -138,31 +138,42 @@ def utility(board):
 
 
 def minimax(board):
-    """
-    Retorna la acción óptima a tomar
-    """
     # Si el juego ya ha terminado solo responde None
     if terminal(board):
         return None
-
-    # Si la máquina juega con O entonces empiezo buscando el mínimo por su utilidad -1
     # Si la máguina juega con X empieza buscando el máximo por su utilidad 1
     i_am = player(board) # juego con X o O 
     new_board = cp.deepcopy(board)
     value = None
     if i_am == X:
-        if new_board == [[EMPTY,EMPTY,EMPTY],[EMPTY,EMPTY,EMPTY],[EMPTY,EMPTY,EMPTY]]:
-            return (1,1) # si soy X y hago el primer movimiento en el tablero me coloco en el centro.
-        else:
-            value = __max_value(new_board) # empiezo buscando el máximo por su utilidad 1
-            for action in actions(new_board): # para cualquier acción con el mismo valor de utilidad
-                if value == __min_value(result(new_board, action)):
-                    return action # retorno la acción para llegar a ese estado
+    
+        best_value = -2 # nunca tomo valores menores a -2
+        best_action= [] # no tomo ninguna acción aún
+        for action in actions(new_board): # para cualquier acción con el mismo valor de utilidad
+            value = __min_value(result(new_board, action)) # busco el mínimo de los estados posibles
+            if value > best_value:
+                best_action = []
+                best_value = value
+                best_action.append(action) # tomo la acción con el máximo valor
+            elif value == best_value:
+                best_action.append(action)
+
+        return random.choice(tuple(best_action))
+    # Si la máquina juega con O entonces empiezo buscando el mínimo por su utilidad -1
     else:
-        value = __min_value(new_board) # empiezo buscando el mínimo por su utilidad -1
+        best_value = 2 # nunca tomo valores mayores a 2
+        best_action= [] # no tomo ninguna acción aún
+
         for action in actions(new_board):
-            if value == __max_value(result(new_board, action)):
-                return action
+            value = __max_value(result(new_board, action)) # busco el máximo de los estados posibles
+            if value < best_value:
+                best_action = []
+                best_value = value
+                best_action.append(action) # tomo la acción con el minimo valor
+            elif value == best_value:
+                best_action.append(action)
+
+        return random.choice(tuple(best_action))
 
 def __max_value(board): 
     if terminal(board): # si el juego ha terminado retorno la utilidad del tablero
