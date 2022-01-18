@@ -1,9 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Dec 16 17:04:31 2020
 
-@author: myriam.hernandez
-"""
+import matplotlib.pyplot as plt
 from typing import Callable
 import numpy as np
 import random
@@ -56,6 +52,13 @@ def idoneidad (camino):
         valor += city.distance(myCities[camino[i-1]], myCities[camino[i]])
     
     return valor
+
+def getSuitability(arr): #arr = [3,2,1,5,..]
+    
+    total = 0
+    for i in range(len(arr)-1):
+        total += myCities[arr[i]].distance(myCities[arr[i+1]])
+    return total
 
 def seleccion (poblacion):
     puntajes = [(idoneidad(i), i) for i in poblacion]
@@ -120,8 +123,14 @@ def algoritmo_genetico ():
     
     poblacion = crear_poblacion(4)
     print("Poblacion inicial: ", poblacion)
-    
+    count = 0
+    generaciones = []
+    idoneidades = []
     for i in range(14):
+        count += 1
+        generaciones.append(count)
+        idoneidades.append(idoneidad(poblacion[0]))
+
         poblacion = seleccion(poblacion) # Seleccionar los 3 mejores
         print ("Mejor distancia", idoneidad(poblacion[0]), "Camino: ", poblacion[0])
         new_poblacion = []
@@ -135,12 +144,18 @@ def algoritmo_genetico ():
         poblacion = cp.deepcopy(new_poblacion) # Actualizar la poblacion
         poblacion = mutation(poblacion) # mutamos toda la población
 
+    plt.plot(generaciones, idoneidades)
+    plt.xlabel('generacion')
+    plt.ylabel('idoneidad')
+    plt.title('Idoneidad vs generacion')
+    plt.show()
+
         
         
         
 
 
-algoritmo_genetico()
-#print (idoneidad([1, 2, 7, 5, 3, 4, 6, 8]))
+#algoritmo_genetico()
+#print (idoneidad([8, 6, 1, 2, 3, 4, 5, 3]))
 #print(crossover ([5, 2, 1, 8, 6, 7, 4, 3], [2, 5, 7, 6, 8, 1, 3, 4]) )
 #print(seleccion([[5, 2, 1, 8, 6, 7, 4, 3], [2, 5, 7, 6, 8, 1, 3, 4], [3, 5, 7, 2, 1, 6, 4, 8], [3, 4, 8, 7, 6, 1, 2, 5]]))
