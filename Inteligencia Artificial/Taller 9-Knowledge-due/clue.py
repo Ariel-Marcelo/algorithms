@@ -34,17 +34,17 @@ knowledge = And(
 )
 
 # Initial cards
-knowledge.add(And(
-    Not(mustard), Not(kitchen), Not(revolver)
+knowledge.add(And( # plum no lo hizo, no sucedió en la librería, no se uso un cuchillo
+    Not(plum), Not(library), Not(knife)
 ))
 
 # Unknown card
-knowledge.add(Or(
-    Not(scarlet), Not(library), Not(wrench)
+knowledge.add(Or( # No lo pudo hacer escarlet en el salon de baile con un revolver
+    Not(scarlet), Not(ballroom), Not(revolver)
 ))
 
-# Known cards
-knowledge.add(Not(plum))
-knowledge.add(Not(ballroom))
+# Known cards # mustard no lo hizo
+knowledge.add(Not(mustard)) # Mustard no lo hizo
+knowledge.add(Not(kitchen)) # No ocurrio tampoco en la cocina
 
 check_knowledge(knowledge)
