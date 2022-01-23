@@ -3,8 +3,6 @@ from itertools import permutations
 
 colors = ["Red", "Blue", "Green", "Yellow"]
 
-hits = ["0","1", "2", "3", "4"]
-
 blue = Symbol("Blue")
 red = Symbol("Red")
 green = Symbol("Green")
@@ -14,21 +12,64 @@ symbols = []
 
 knowledge = And()
 
+# Todas las posibles permutaciones sin repetición
 cases = list(permutations(colors, 4))
 
-# all possible symbols
-for case in cases: 
-    symbols.append(Symbol(case))
-
+# Tengo que saber  todas las combinaciones que pueden estar ubicadas correctamente
 for case in cases:
-    knowledge.add(symbols[cases.index(case)] == case)
+    symbols.append(Symbol(case))
+ 
+knowledge.add(Or(
+        symbols[0],
+        symbols[1],
+        symbols[2],
+        symbols[3],
+        symbols[4],
+        symbols[5],
+        symbols[6],
+        symbols[7],
+        symbols[8],
+        symbols[9],
+        symbols[10],
+        symbols[11],
+        symbols[12],
+        symbols[13],
+        symbols[14],
+        symbols[15],
+        symbols[16],
+        symbols[17],
+        symbols[18],
+        symbols[19],
+        symbols[20],
+        symbols[21],
+        symbols[22],
+        symbols[23]
+))
 
+# Cada caso podría implicar que 1 letra este mal o que  2 lo estén  o 3 estén mal ubicadas 
 for case in symbols:
-    Implication(And(case,Symbol(hits[0])),And(Not(blue),Not(red),Not(green),Not(yellow)))
-    Implication(And(case,Symbol(hits[1])),Or(Not(And(blue,yellow,red)),Not(And(blue,yellow,green)),Not(And(blue,red,green)),Not(And(yellow,red,green))))
-    Implication(And(case,Symbol(hits[2])),Or(Not(And(blue,yellow)),Not(And(blue,red)),Not(And(blue,green)),Not(And(yellow,green)),Not(And(yellow,red)),Not(red,green)))
-    Implication(And(case,Symbol(hits[3])),Or(Not(blue),Not(yellow),Not(green),Not(yellow)))
-    Implication(And(case,Symbol(hits[4])),And(blue,red,green,yellow))
+    knowledge.add(Or(
+            Implication(case,And(Not(blue),Not(red),Not(green),Not(yellow))),
+            Implication(case,Or(Not(And(blue,yellow,red)),Not(And(blue,yellow,green)),Not(And(blue,red,green)),Not(And(yellow,red,green)))),
+            Implication(case,Or(Not(And(blue,yellow)),Not(And(blue,red)),Not(And(blue,green)),Not(And(yellow,green)),Not(And(yellow,red)),Not(And(red,green)))),
+            Implication(case, And(blue, red, green, yellow))
+        )
+    )
+    
+# Puesto que cada caso es único entonces no pueden exisitr 2 casos ubicados en la posición correcta 
+for case1 in cases:
+    for case2 in cases:
+        if case1 != case2:
+            knowledge.add(
+                Implication(Symbol(case1), Not(Symbol(case2)))
+            )
+
+
+for symbol in symbols:
+     if model_check(knowledge, symbol):
+         print(f"{symbol}:YES" )
+     elif model_check(knowledge, Not(symbol)):
+         print(f"{symbol}:Maybe" )
 
 # for person in people:
 #     for house in houses:
