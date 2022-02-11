@@ -1,3 +1,4 @@
-info.txt
-test.py
 test.js
+*.cpp
+test*
+*.png
