@@ -2,15 +2,12 @@ def factorial() :
   entrada = int (input("Enter a number: "))
   result = num = entrada
   
-  while num > 1 :
-    num = num - 1
-    result = result * num
+  if num == 0:
+    result = 1
+  else:
+    while num > 1 :
+      num = num - 1
+      result = result * num
     
   print ("The factorial of", entrada, "is", result)
-
-  
-
-
-  print ("The factorial of the number is: ", result)
-
 factorial()

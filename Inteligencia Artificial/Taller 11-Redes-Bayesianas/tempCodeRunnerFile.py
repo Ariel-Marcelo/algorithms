@@ -1,0 +1,1 @@
+print(f"{node.name}: {prediction}")
