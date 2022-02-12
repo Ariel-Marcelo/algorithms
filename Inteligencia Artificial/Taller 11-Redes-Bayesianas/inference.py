@@ -2,7 +2,7 @@ from model import model
 
 # Calculate predictions
 predictions = model.predict_proba({
-    "terremoto": "yes",
+    "dog": "yes",
 })
 
 # Print predictions for each node
