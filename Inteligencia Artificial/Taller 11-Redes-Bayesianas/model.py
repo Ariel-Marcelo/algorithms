@@ -1,9 +1,8 @@
 from pomegranate import *
 
-# Rain node has no parents
 rain = Node(DiscreteDistribution({
     "yes": 0.2,
-    "no": 0.7
+    "no": 0.8
 }), name="rain")
 
 splinkers = Node(DiscreteDistribution({
@@ -11,15 +10,13 @@ splinkers = Node(DiscreteDistribution({
     "no": 0.4
 }), name="splinkers")
 
-# Train node is conditional on rain and maintenance
 neighbor = Node(ConditionalProbabilityTable([
     ["yes", "yes", 0.3],
-    ["yes", "no", 0.4],
-    ["no", "yes", 0.7],
+    ["yes", "no", 0.7],
+    ["no", "yes", 0.4],
     ["no", "no", 0.6],    
 ], [rain.distribution]), name="neighbor")
 
-# Track maintenance node is conditional on rain
 grass = Node(ConditionalProbabilityTable([
     ["yes", "yes", "yes", 0.9],
     ["yes", "no", "yes", 0.7],
@@ -31,9 +28,6 @@ grass = Node(ConditionalProbabilityTable([
     ["no", "no", "no",0.8]
 ], [rain.distribution, splinkers.distribution]), name="grass")
 
-
-
-# Appointment node is conditional on train
 dog = Node(ConditionalProbabilityTable([
     ["yes", "yes", "yes", 0.90],
     ["yes", "no", "yes", 0.40],
