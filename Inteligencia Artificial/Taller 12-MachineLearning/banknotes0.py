@@ -7,9 +7,9 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 
 # model = Perceptron()
-# model = svm.SVC()
-# model = KNeighborsClassifier(n_neighbors=1)
-model = GaussianNB()
+model = svm.SVC()
+# model = KNeighborsClassifier(n_neighbors=3)
+# model = GaussianNB()
 
 # Read data in from file
 with open("banknotes.csv") as f:
@@ -24,7 +24,7 @@ with open("banknotes.csv") as f:
         })
 
 # Separate data into training and testing groups
-holdout = int(0.40 * len(data))
+holdout = int(0.80 * len(data))
 random.shuffle(data)
 testing = data[:holdout]
 training = data[holdout:]
@@ -43,15 +43,32 @@ predictions = model.predict(X_testing)
 correct = 0
 incorrect = 0
 total = 0
+authOk = 0
+conterOk  = 0
+authErr = 0
+conterErr = 0
+
 for actual, predicted in zip(y_testing, predictions):
     total += 1
     if actual == predicted:
         correct += 1
+        if actual == "Authentic":
+            authOk += 1
+        else:
+            conterOk += 1
     else:
         incorrect += 1
+        if actual == "Authentic":
+            authErr += 1
+        else:
+            conterErr += 1
 
 # Print results
 print(f"Results for model {type(model).__name__}")
 print(f"Correct: {correct}")
 print(f"Incorrect: {incorrect}")
+print(f"Authentic Correct Predicted: {authOk}")
+print(f"Authentic Incorrect Predicted: {authErr}")
+print(f"Counterfeit Correct Predicted: {conterOk}")
+print(f"Counterfeit Incorrect Predicted: {conterErr}")
 print(f"Accuracy: {100 * correct / total:.2f}%")

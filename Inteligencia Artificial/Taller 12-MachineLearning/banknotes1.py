@@ -7,10 +7,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 
-model = Perceptron()
+# model = Perceptron()
 # model = svm.SVC()
 # model = KNeighborsClassifier(n_neighbors=1)
-# model = GaussianNB()
+model = GaussianNB()
 
 # Read data in from file
 with open("banknotes.csv") as f:
@@ -29,7 +29,7 @@ evidence = [row["evidence"] for row in data]
 labels = [row["label"] for row in data]
 
 X_training, X_testing, y_training, y_testing = train_test_split(
-    evidence, labels, test_size=0.4
+    evidence, labels, test_size=0.2
 )
 
 # Fit model
